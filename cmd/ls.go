@@ -95,11 +95,3 @@ func getBackendDetails(token, device string) BackendDetails {
 	}
 	return backendDetails
 }
-
-type BackendDetails struct {
-	State          bool   `json:"state"`
-	Status         string `json:"status"`
-	Message        string `json:"message"`
-	LengthQueue    int    `json:"length_queue"`
-	BackendVersion string `json:"backend_version"`
-}
