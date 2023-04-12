@@ -7,7 +7,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
-	"net/http"
 	"os"
 
 	"github.com/orangekame3/ibmq-cli/pkg"
@@ -39,17 +38,9 @@ func init() {
 
 func listBackends() {
 	token := pkg.LoadCredentials()
-	client := &http.Client{}
-	req, err := http.NewRequest("GET", "https://us-east.quantum-computing.cloud.ibm.com/backends", nil)
+	resp, err := pkg.GetRequest(token, "backends")
 	if err != nil {
 		fmt.Println("Error creating request:", err)
-		os.Exit(1)
-	}
-	req.Header.Add("Authorization", "Bearer "+token)
-
-	resp, err := client.Do(req)
-	if err != nil {
-		fmt.Println("Error making request:", err)
 		os.Exit(1)
 	}
 	defer resp.Body.Close()
@@ -67,7 +58,7 @@ func listBackends() {
 	}
 	for _, device := range backendList.Devices {
 		if longOutput {
-			backendDetails := getBackendDetails(client, token, device)
+			backendDetails := getBackendDetails(token, device)
 			fmt.Printf("- %s\n", device)
 			fmt.Printf("  Backend version: %s\n", backendDetails.BackendVersion)
 			fmt.Printf("  State: %v\n", backendDetails.State)
@@ -80,26 +71,21 @@ func listBackends() {
 	}
 }
 
-func getBackendDetails(client *http.Client, token string, backendName string) BackendDetails {
-	req, err := http.NewRequest("GET", fmt.Sprintf("https://us-east.quantum-computing.cloud.ibm.com/backends/%s/status", backendName), nil)
+func getBackendDetails(token, device string) BackendDetails {
+	resp, err := pkg.GetRequest(token, fmt.Sprintf("/backends/%s/status", device))
 	if err != nil {
-		fmt.Println("Error creating request for backend details:", err)
-		os.Exit(1)
-	}
-	req.Header.Add("Authorization", "Bearer "+token)
-
-	resp, err := client.Do(req)
-	if err != nil {
-		fmt.Println("Error making request for backend details:", err)
+		fmt.Println("Error creating request:", err)
 		os.Exit(1)
 	}
 	defer resp.Body.Close()
 
 	body, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
-		fmt.Println("Error reading response body for backend details:", err)
+		fmt.Println("Error reading response body:", err)
 		os.Exit(1)
 	}
+
+	defer resp.Body.Close()
 
 	var backendDetails BackendDetails
 	err = json.Unmarshal(body, &backendDetails)
@@ -107,7 +93,6 @@ func getBackendDetails(client *http.Client, token string, backendName string) Ba
 		fmt.Println("Error parsing JSON for backend details:", err)
 		os.Exit(1)
 	}
-
 	return backendDetails
 }
 
