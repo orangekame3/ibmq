@@ -1,1 +1,1 @@
-# ibmq-cli
+# ibmq

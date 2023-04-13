@@ -1,8 +1,9 @@
-module github.com/orangekame3/ibmq-cli
+module github.com/orangekame3/ibmq
 
 go 1.20
 
 require (
+	github.com/orangekame3/ibmq-cli v0.0.0-20230413155710-25383979ed25
 	github.com/spf13/cobra v1.7.0
 	github.com/spf13/viper v1.15.0
 	golang.org/x/crypto v0.0.0-20220525230936-793ad666bf5e

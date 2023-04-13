@@ -9,8 +9,8 @@ import (
 	"io/ioutil"
 	"os"
 
-	"github.com/orangekame3/ibmq-cli/model"
-	"github.com/orangekame3/ibmq-cli/pkg"
+	"github.com/orangekame3/ibmq/model"
+	"github.com/orangekame3/ibmq/pkg"
 	"github.com/spf13/cobra"
 )
 

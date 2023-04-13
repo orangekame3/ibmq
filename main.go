@@ -21,7 +21,7 @@ THE SOFTWARE.
 */
 package main
 
-import "github.com/orangekame3/ibmq-cli/cmd"
+import "github.com/orangekame3/ibmq/cmd"
 
 func main() {
 	cmd.Execute()
