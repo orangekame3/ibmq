@@ -26,7 +26,6 @@ to quickly create a Cobra application.`,
 
 func init() {
 	rootCmd.AddCommand(backendCmd)
-
 	// Here you will define your flags and configuration settings.
 
 	// Cobra supports Persistent Flags which will work for this command
@@ -36,16 +35,4 @@ func init() {
 	// Cobra supports local flags which will only run when this command
 	// is called directly, e.g.:
 	// backendCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
-}
-
-type BackendList struct {
-	Devices []string `json:"devices"`
-}
-
-type BackendDetails struct {
-	State          bool   `json:"state"`
-	Status         string `json:"status"`
-	Message        string `json:"message"`
-	LengthQueue    int    `json:"length_queue"`
-	BackendVersion string `json:"backend_version"`
 }

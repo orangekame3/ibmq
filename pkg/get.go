@@ -1,9 +1,14 @@
 package pkg
 
 import (
+	"encoding/json"
 	"fmt"
+	"io/ioutil"
 	"net/http"
 	"net/url"
+	"os"
+
+	"github.com/orangekame3/ibmq-cli/model"
 )
 
 var baseURL = "https://us-east.quantum-computing.cloud.ibm.com"
@@ -29,4 +34,29 @@ func GetRequest(token, endpointPath string) (*http.Response, error) {
 	}
 
 	return resp, nil
+}
+
+func GetBackendStatus(token, device string) (model.BackendDetails, error) {
+	resp, err := GetRequest(token, fmt.Sprintf("/backends/%s/status", device))
+	if err != nil {
+		fmt.Println("Error creating request:", err)
+		os.Exit(1)
+	}
+	defer resp.Body.Close()
+
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		fmt.Println("Error reading response body:", err)
+		os.Exit(1)
+	}
+
+	defer resp.Body.Close()
+
+	var backendDetails model.BackendDetails
+	err = json.Unmarshal(body, &backendDetails)
+	if err != nil {
+		fmt.Println("Error parsing JSON for backend details:", err)
+		os.Exit(1)
+	}
+	return backendDetails, nil
 }
