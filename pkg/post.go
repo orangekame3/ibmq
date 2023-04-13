@@ -7,7 +7,7 @@ import (
 	"net/http"
 	"net/url"
 
-	"github.com/orangekame3/ibmq-cli/model"
+	"github.com/orangekame3/ibmq/model"
 )
 
 func PostRequest(token, endpointPath string, body []byte) (*http.Response, error) {

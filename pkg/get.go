@@ -8,7 +8,7 @@ import (
 	"net/url"
 	"os"
 
-	"github.com/orangekame3/ibmq-cli/model"
+	"github.com/orangekame3/ibmq/model"
 )
 
 var baseURL = "https://us-east.quantum-computing.cloud.ibm.com"
