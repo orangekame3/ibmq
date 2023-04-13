@@ -60,3 +60,35 @@ func GetBackendStatus(token, device string) (model.BackendDetails, error) {
 	}
 	return backendDetails, nil
 }
+
+func GetJobStatus(token, jobID string) (*model.JobStatus, error) {
+	resp, err := GetRequest(token, fmt.Sprintf("/jobs/%s/status", jobID))
+	if err != nil {
+		fmt.Println("Error creating request:", err)
+		os.Exit(1)
+	}
+	defer resp.Body.Close()
+
+	jobStatus := &model.JobStatus{}
+	err = json.NewDecoder(resp.Body).Decode(jobStatus)
+	if err != nil {
+		return nil, err
+	}
+	return jobStatus, nil
+}
+
+func GetJobResult(token, jobID string) (*model.JobResult, error) {
+	resp, err := GetRequest(token, fmt.Sprintf("/jobs/%s/result", jobID))
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+
+	jobResult := &model.JobResult{}
+	err = json.NewDecoder(resp.Body).Decode(jobResult)
+	if err != nil {
+		return nil, err
+	}
+
+	return jobResult, nil
+}

@@ -11,3 +11,24 @@ type BackendDetails struct {
 	LengthQueue    int    `json:"length_queue"`
 	BackendVersion string `json:"backend_version"`
 }
+
+type JobRequest struct {
+	QASM string `json:"qasm"`
+}
+
+type JobStatus struct {
+	Status string `json:"status"`
+	QobjID string `json:"qobj_id"`
+}
+
+type JobResult struct {
+	Results []struct {
+		Counts struct {
+			Values map[string]int `json:"values"`
+		} `json:"counts"`
+	} `json:"results"`
+}
+
+type Credentials struct {
+	Token string `json:"access_token"`
+}
